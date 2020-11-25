@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "458723687827",
+    "firebase_url": "https://applied-shade-295522.firebaseio.com",
+    "project_id": "applied-shade-295522",
+    "storage_bucket": "applied-shade-295522.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458723687827:android:1aaa20ab8c6641f591fc66",
+        "android_client_info": {
+          "package_name": "com.example.find_me_puc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458723687827-a9bert0c078llgpvlnkfm91hufk57t7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxqBW20ZXbeHogq-eFQNMuOToFQ265IYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458723687827-a9bert0c078llgpvlnkfm91hufk57t7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
