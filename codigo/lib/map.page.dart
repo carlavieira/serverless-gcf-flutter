@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -13,8 +15,15 @@ class _MapPageState extends State<MapPage> {
   GoogleMapController mapController;
   Set<Marker> markers = new Set<Marker>();
 
+  final databaseReference = Firestore.instance;
+
   Position _position;
+  double myLatitude;
+  double myLongitude;
   StreamSubscription<Position> _positionStream;
+
+  //double lat = -19.9281712;
+  //double long = -43.9630671;
 
   void initState() {
     super.initState();
@@ -24,14 +33,26 @@ class _MapPageState extends State<MapPage> {
         .getPositionStream(locationOption)
         .listen((Position position) {
       setState(() {
-        print("POSIÇÃO");
         _position = position;
+        myLatitude = position.latitude;
+        myLongitude = position.longitude;
+        if (myLatitude != null && myLongitude != null) {
+          getData(myLatitude ?? 0, myLongitude ?? 0);
+        }
       });
     });
   }
 
-  double lat = -19.9281712;
-  double long = -43.9630671;
+  void getData(lat1, lat2) {
+    print('Minha Latitude: ' + lat1.toString());
+    print('Minha Longitude: ' + lat2.toString());
+    databaseReference
+        .collection("puc-units")
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((units) => print('${units.data}}'));
+    });
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -76,14 +97,14 @@ class _MapPageState extends State<MapPage> {
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           onCameraMove: (data) {
-            print(data);
+            //print(data);
           },
           onTap: (position) {
-            print(position);
+            //print(position);
           },
           initialCameraPosition: CameraPosition(
               target: LatLng(_position.latitude ?? 0, _position.longitude ?? 0),
-              zoom: 20.0),
+              zoom: 18.0),
           markers: markers,
         ));
   }
