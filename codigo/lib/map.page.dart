@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 class MapPage extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  void getData(lat1, lat2) {
+  Future<void> getData(lat1, lat2) async {
     print('Minha Latitude: ' + lat1.toString());
     print('Minha Longitude: ' + lat2.toString());
     databaseReference
@@ -52,6 +53,17 @@ class _MapPageState extends State<MapPage> {
         .then((QuerySnapshot snapshot) {
       snapshot.documents.forEach((units) => print('${units.data}}'));
     });
+    Future fetchNearestPUC() async {
+      http.Response response =
+          await http.get('https://jsonplaceholder.typicode.com/albums/1');
+
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body));
+      }
+    }
+
+    fetchNearestPUC();
+    //print("Response:" + nearestPUC.toString());
   }
 
   void _onMapCreated(GoogleMapController controller) {
