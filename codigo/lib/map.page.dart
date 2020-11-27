@@ -78,6 +78,7 @@ class _MapPageState extends State<MapPage> {
           onCameraMove: (data) {
             print(data);
           },
+          myLocationEnabled: true,
           onTap: (position) {
             print(position);
           },
