@@ -23,8 +23,21 @@ class _MapPageState extends State<MapPage> {
   double myLongitude;
   StreamSubscription<Position> _positionStream;
 
-  //double lat = -19.9281712;
-  //double long = -43.9630671;
+  // Coordenadas Coreu
+  // double lat = -19.9222935;
+  // double long = -43.9908535;
+
+  // Coordenadas Barreiro
+  // double lat = -19.9389198;
+  // double long = -44.032264;
+
+  // Coordenadas Praça da Liberdade
+  // double lat = -19.9332786;
+  // double long = -43.9371484;
+
+  // Coordenadas São Gabriel
+  double lat = -19.9024031;
+  double long = -43.997158;
 
   void initState() {
     super.initState();
@@ -38,32 +51,105 @@ class _MapPageState extends State<MapPage> {
         myLatitude = position.latitude;
         myLongitude = position.longitude;
         if (myLatitude != null && myLongitude != null) {
-          getData(myLatitude ?? 0, myLongitude ?? 0);
+          getData(lat ?? 0, long ?? 0);
         }
       });
     });
   }
 
-  Future<void> getData(lat1, lat2) async {
+  Future<void> getData(lat1, lng1) async {
     print('Minha Latitude: ' + lat1.toString());
-    print('Minha Longitude: ' + lat2.toString());
+    print('Minha Longitude: ' + lng1.toString());
+
+    Future fetchNearestPUC(latUnit, lngUnit, pucname) async {
+      try {
+        var url =
+            'https://southamerica-east1-applied-shade-295522.cloudfunctions.net/find-puc/?' +
+                'lat1=' +
+                lat1.toString() +
+                '&lng1=' +
+                lng1.toString() +
+                '&lat2=' +
+                latUnit +
+                '&lng2=' +
+                lngUnit +
+                '&pucname=' +
+                pucname;
+        print(url);
+        http.Response response = await http.get(url);
+        if (response.statusCode == 200) {
+          return response.body;
+        }
+      } catch (exception) {
+        print(exception.toString());
+      }
+    }
+
+    //print('${units.data}}'),
+    var response, unityLat, unityLng, unityName, itsClose;
+
     databaseReference
         .collection("puc-units")
         .getDocuments()
         .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((units) => print('${units.data}}'));
+      snapshot.documents.forEach((units) async => {
+            print(units.data),
+            unityLat = units.data['latitude'],
+            unityLng = units.data['longitude'],
+            unityName = units.data['name'],
+            response = await (fetchNearestPUC(unityLat, unityLng, unityName)),
+            print(jsonDecode(response)),
+            /*
+            if (response['itsClose']) == true) {
+              _alert(unityName)
+            }
+            */
+          });
     });
+    /*
     Future fetchNearestPUC() async {
-      http.Response response =
-          await http.get('https://jsonplaceholder.typicode.com/albums/1');
-
+      http.Response response = await http.get(
+        'https://southamerica-east1-applied-shade-295522.cloudfunctions.net/find-puc/?'+ 
+        'lat1=' + lat1.toString() + 
+        '&lng1=' + lng1.toString() +
+        '&lat2=' + units.data.latitude + 
+        '&lng2=' + units.data.longitude
+      );
       if (response.statusCode == 200) {
         print(jsonDecode(response.body));
       }
     }
-
     fetchNearestPUC();
+    */
+
     //print("Response:" + nearestPUC.toString());
+  }
+
+  Future<void> _alert(pucName) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Próximo de uma PUC'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você se aproximou da PUC: ' + pucName),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -98,6 +184,7 @@ class _MapPageState extends State<MapPage> {
       markers.add(sg);
       markers.add(barreiro);
     });
+    //_alert("Praça da Liberdade");
   }
 
   @override
@@ -115,7 +202,9 @@ class _MapPageState extends State<MapPage> {
             //print(position);
           },
           initialCameraPosition: CameraPosition(
-              target: LatLng(_position.latitude ?? 0, _position.longitude ?? 0),
+              // Current Position
+              //target: LatLng(myLatitude ?? 0, myLongitude ?? 0), zoom: 18.0),
+              target: LatLng(lat ?? 0, long ?? 0),
               zoom: 18.0),
           markers: markers,
         ));
