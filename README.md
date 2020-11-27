@@ -37,8 +37,34 @@ flutter run
 
 ### Arquivo main.dart
 
-* classe MyApp : 
+* classe *MyApp* : Classe da aplicação que extende a classe [StatelessWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html) e, ao ser executada pelo método *runApp()* no *main()*, irá inicializar um [MaterialApp](https://api.flutter.dev/flutter/material/MaterialApp-class.html) com título *"FIND ME at PUC Minas"* e com home *MapPage()*, classe que será definida no arquivo *map.page.dart* .
 
 ### Arquivo map.page.dart
 
-* classe MyApp : 
+* classe *MapPage* : Classe da página do mapa, que extende a classe [StatelessWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html) e, 
+
+* classe *_MapPageState* : Classe de estado da página do mapa, que extende [State\<MapPage\>](https://api.flutter.dev/flutter/widgets/State-class.html) e, 
+
+#### Atributos _MapPageState
+
+| Nome do Atributo  | Tipo                | Funcionalidade                           |
+|-------------------|---------------------|------------------------------------------|
+| mapController     | GoogleMapController |                                          |
+| markers           | Set                 |                                          |
+| databaseReference |                     |                                          |
+| _position         | Position            |                                          |
+| myLatitude        | double              | Salvar a latitude do usuário no momento  |
+| myLongitude       | double              | Salvar a longiture do usuário no momento |
+| _positionStream   | StreamSubscription  |                                          |
+| showAlert         | bool                |                                          |
+
+#### Métodos _MapPageState
+
+| Nome do Método | Entrada                         | Retorno       | Funcionalidade |
+|----------------|---------------------------------|---------------|----------------|
+| initState      | -                               | (void)        |                |
+| _checkItsClose | response                        |               |                |
+| getData        | lat1, lng1                      | response.body |                |
+| _alert         | pucName                         | AlertDialog   |                |
+| _onMapCreated  | GoogleMapController  controller |               |                |
+| build          | BuildContext  context           | Scaffold      |                |
