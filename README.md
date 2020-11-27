@@ -41,7 +41,7 @@ flutter run
 
 ### Arquivo map.page.dart
 
-* classe *MapPage* : Classe da página do mapa, que extende a classe [StatelessWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html) e, 
+* classe *MapPage* : Classe da página do mapa, que extende a classe [StatelessWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html) e instancia um estado da página.
 
 * classe *_MapPageState* : Classe de estado da página do mapa, que extende [State\<MapPage\>](https://api.flutter.dev/flutter/widgets/State-class.html) e, 
 
@@ -49,22 +49,23 @@ flutter run
 
 | Nome do Atributo  | Tipo                | Funcionalidade                           |
 |-------------------|---------------------|------------------------------------------|
-| mapController     | GoogleMapController |                                          |
-| markers           | Set                 |                                          |
+| mapController     | [GoogleMapController](https://pub.dev/documentation/google_maps_flutter/latest/google_maps_flutter/GoogleMapController-class.html) | Controler da instância do Google Maps|
+| markers           | [Set](https://api.flutter.dev/flutter/dart-core/Set-class.html)\<[Marker](https://pub.dev/documentation/flutter_map/latest/flutter_map.plugin_api/Marker-class.html)\> | Guarda a lista de Marker no qual representam as unidades da PUC      |
 | databaseReference |                     |                                          |
-| _position         | Position            |                                          |
+| _position         | Position            | Posição utiliando do geolocator |
 | myLatitude        | double              | Salvar a latitude do usuário no momento  |
 | myLongitude       | double              | Salvar a longiture do usuário no momento |
-| _positionStream   | StreamSubscription  |                                          |
-| showAlert         | bool                |                                          |
+| _positionStream   | [StreamSubscription](https://api.dart.dev/stable/2.10.4/dart-async/StreamSubscription-class.html)\<Position\>  |                                          |
+| showAlert         | bool                | Definir se deve ou não mostrar o alerta |
 
 #### Métodos _MapPageState
 
-| Nome do Método | Entrada                         | Retorno       | Funcionalidade |
-|----------------|---------------------------------|---------------|----------------|
-| initState      | -                               | (void)        |                |
-| _checkItsClose | response                        |               |                |
-| getData        | lat1, lng1                      | response.body |                |
-| _alert         | pucName                         | AlertDialog   |                |
-| _onMapCreated  | GoogleMapController  controller |               |                |
-| build          | BuildContext  context           | Scaffold      |                |
+| Nome do Método  | Entrada                         | Retorno       | Funcionalidade                                                                                                                                                                       |
+|-----------------|---------------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| initState       | -                               | -              | Inicializar o estado com as latitudes e longitudes iniciais do usuário                                                                                                               |
+| _checkItsClose  | response                        | -              | Alterar o atributo booleano *showAlert* para true caso a resposta da chamada seja que os pontos estão próximos.                                                                      |
+| getData         | lat1, lng1                      | -              | Para um determinado ponto, utiliza da função *fetchNearestPUC* para a restosta se o ponto está próximo de uma das unidades em *puc-units* e então utiliza da função *_checkItsClose* |
+| fetchNearestPUC | latUnit, lngUnit, pucname       | response.body | Para uma determinada unidade da PUC, utiliza da função no cloud fuctions saber se um ponto está próximo ou não daquela PUC.                                                          |
+| _alert          | pucName                         | AlertDialog   | Mostra uma janela dando as boas-vindas a PUC da unidade com o nome dado em *pucName*                                                                                                 |
+| _onMapCreated   | GoogleMapController  controller | -              | Prepara o mapa e adiciona os Makers das unidades da PUC a lista *markers*.                                                                                                           |
+| build           | BuildContext  context           | Scaffold      |                                                                                                                                                                                      |
