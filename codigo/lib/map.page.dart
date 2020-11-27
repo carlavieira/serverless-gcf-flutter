@@ -187,6 +187,33 @@ class _MapPageState extends State<MapPage> {
     //_alert("Praça da Liberdade");
   }
 
+  Future<void> _alert(pucName) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Próximo de uma PUC'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Bem vindo à PUC Minas unidade  '+ pucName),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,6 +225,8 @@ class _MapPageState extends State<MapPage> {
           onCameraMove: (data) {
             //print(data);
           },
+
+          myLocationEnabled: true,
           onTap: (position) {
             //print(position);
           },
