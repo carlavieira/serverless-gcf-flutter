@@ -77,7 +77,7 @@ class _MapPageState extends State<MapPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Você se aproximou da PUC: '+ pucName),
+                Text('Bem vindo à PUC Minas unidade  '+ pucName),
               ],
             ),
           ),
