@@ -33,8 +33,8 @@ class _MapPageState extends State<MapPage> {
   //double long = -44.0262124;
 
   // Coordenadas Praça da Liberdade
-  double lat = -19.9332786;
-  double long = -43.9371484;
+  //double lat = -19.9332786;
+  //double long = -43.9371484;
 
   // Coordenadas São Gabriel
   //double lat = -19.8594055;
@@ -59,16 +59,13 @@ class _MapPageState extends State<MapPage> {
   }
 
   _checkItsClose(response) {
-    if (response['itsClose'] == true && showAlert == false) {
+    if (response['itsClose'] && !showAlert) {
       _alert(response['pucname']);
       showAlert = true;
     }
   }
 
   Future<void> getData(lat1, lng1) async {
-    //print('Minha Latitude: ' + lat1.toString());
-    print('Minha Longitude: ' + lng1.toString());
-
     Future fetchNearestPUC(latUnit, lngUnit, pucname) async {
       try {
         var url =
@@ -92,7 +89,7 @@ class _MapPageState extends State<MapPage> {
       }
     }
 
-    //print('${units.data}}'),
+    // ignore: unused_local_variable
     var unityLat, unityLng, unityName, itsClose, response;
 
     databaseReference
@@ -101,33 +98,12 @@ class _MapPageState extends State<MapPage> {
         .then((QuerySnapshot snapshot) {
       snapshot.documents.forEach((units) async => {
             print(units.data),
-            unityLat = units.data['latitude'],
-            unityLng = units.data['longitude'],
-            unityName = units.data['name'],
-            response = await (fetchNearestPUC(
-                units.data['latitude'], units.data['longitude'], unityName)),
+            response = await (fetchNearestPUC(units.data['latitude'],
+                units.data['longitude'], units.data['name'])),
             itsClose = jsonDecode(response)['itsClose'],
-            print(jsonDecode(response)['itsClose'] == true),
             _checkItsClose(jsonDecode(response))
           });
     });
-    /*
-    Future fetchNearestPUC() async {
-      http.Response response = await http.get(
-        'https://southamerica-east1-applied-shade-295522.cloudfunctions.net/find-puc/?'+ 
-        'lat1=' + lat1.toString() + 
-        '&lng1=' + lng1.toString() +
-        '&lat2=' + units.data.latitude + 
-        '&lng2=' + units.data.longitude
-      );
-      if (response.statusCode == 200) {
-        print(jsonDecode(response.body));
-      }
-    }
-    fetchNearestPUC();
-    */
-
-    //print("Response:" + nearestPUC.toString());
   }
 
   Future<void> _alert(pucName) async {
@@ -190,29 +166,21 @@ class _MapPageState extends State<MapPage> {
       markers.add(sg);
       markers.add(barreiro);
     });
-    //_alert("Praça da Liberdade");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            //title: Text("Where go, PUC Minas"),
-            title: Text('Where by PUCMINAS')),
+        appBar: AppBar(title: Text('Find me at PUC Minas')),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
-          onCameraMove: (data) {
-            //print(data);
-          },
+          onCameraMove: (data) {},
           myLocationEnabled: true,
           onTap: (position) {
             print(position);
           },
           initialCameraPosition: CameraPosition(
-              // Current Position
-              //target: LatLng(myLatitude ?? 0, myLongitude ?? 0), zoom: 18.0),
-              target: LatLng(myLatitude ?? 0, myLongitude ?? 0),
-              zoom: 18.0),
+              target: LatLng(myLatitude ?? 0, myLongitude ?? 0), zoom: 18.0),
           markers: markers,
         ));
   }
