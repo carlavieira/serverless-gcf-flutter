@@ -57,7 +57,7 @@ Após rodar a aplicação, você pode alterar a sua localização. Quando a sua 
 | _position         | Position            | Posição utiliando do geolocator |
 | myLatitude        | double              | Salvar a latitude do usuário no momento  |
 | myLongitude       | double              | Salvar a longiture do usuário no momento |
-| _positionStream   | [StreamSubscription](https://api.dart.dev/stable/2.10.4/dart-async/StreamSubscription-class.html)\<Position\>  |                                          |
+| _positionStream   | [StreamSubscription](https://api.dart.dev/stable/2.10.4/dart-async/StreamSubscription-class.html)\<Position\>  |                             Stream de posições, que escuta mudanças na posição, onde é possível executar métodos a cada mudança |
 | showAlert         | bool                | Definir se deve ou não mostrar o alerta |
 
 #### Métodos _MapPageState
