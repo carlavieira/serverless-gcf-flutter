@@ -24,20 +24,20 @@ class _MapPageState extends State<MapPage> {
   StreamSubscription<Position> _positionStream;
 
   // Coordenadas Coreu
-  // double lat = -19.9222935;
-  // double long = -43.9908535;
+  //double lat = -19.9222935;
+  //double long = -43.9908535;
 
   // Coordenadas Barreiro
-  // double lat = -19.9389198;
-  // double long = -44.032264;
+  //double lat = -19.976835;
+  //double long = -44.0262124;
 
   // Coordenadas Praça da Liberdade
-  // double lat = -19.9332786;
-  // double long = -43.9371484;
+  double lat = -19.9332786;
+  double long = -43.9371484;
 
   // Coordenadas São Gabriel
-  double lat = -19.9024031;
-  double long = -43.997158;
+  //double lat = -19.8594055;
+  //double long = -43.9189307;
 
   void initState() {
     super.initState();
@@ -57,8 +57,15 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  _checkItsClose(response) {
+    print(response);
+    if (response['itsClose'] == true) {
+      _alert(response['pucname']);
+    }
+  }
+
   Future<void> getData(lat1, lng1) async {
-    print('Minha Latitude: ' + lat1.toString());
+    //print('Minha Latitude: ' + lat1.toString());
     print('Minha Longitude: ' + lng1.toString());
 
     Future fetchNearestPUC(latUnit, lngUnit, pucname) async {
@@ -75,7 +82,6 @@ class _MapPageState extends State<MapPage> {
                 lngUnit +
                 '&pucname=' +
                 pucname;
-        print(url);
         http.Response response = await http.get(url);
         if (response.statusCode == 200) {
           return response.body;
@@ -86,7 +92,7 @@ class _MapPageState extends State<MapPage> {
     }
 
     //print('${units.data}}'),
-    var response, unityLat, unityLng, unityName, itsClose;
+    var unityLat, unityLng, unityName, itsClose, response;
 
     databaseReference
         .collection("puc-units")
@@ -97,13 +103,11 @@ class _MapPageState extends State<MapPage> {
             unityLat = units.data['latitude'],
             unityLng = units.data['longitude'],
             unityName = units.data['name'],
-            response = await (fetchNearestPUC(unityLat, unityLng, unityName)),
-            print(jsonDecode(response)),
-            /*
-            if (response['itsClose']) == true) {
-              _alert(unityName)
-            }
-            */
+            response = await (fetchNearestPUC(
+                units.data['latitude'], units.data['longitude'], unityName)),
+            itsClose = jsonDecode(response)['itsClose'],
+            print(jsonDecode(response)['itsClose'] == true),
+            _checkItsClose(jsonDecode(response))
           });
     });
     /*
@@ -187,33 +191,6 @@ class _MapPageState extends State<MapPage> {
     //_alert("Praça da Liberdade");
   }
 
-  Future<void> _alert(pucName) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Próximo de uma PUC'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Bem vindo à PUC Minas unidade  '+ pucName),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,10 +202,9 @@ class _MapPageState extends State<MapPage> {
           onCameraMove: (data) {
             //print(data);
           },
-
           myLocationEnabled: true,
           onTap: (position) {
-            //print(position);
+            print(position);
           },
           initialCameraPosition: CameraPosition(
               // Current Position
