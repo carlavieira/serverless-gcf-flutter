@@ -33,6 +33,8 @@ Para executar a aplicação, é possível realizar o comando:
 flutter run
 ```
 
+Após rodar a aplicação, você pode alterar a sua localização. Quando a sua localização se aproximar de uma das unidades da PUC Minas, você receberá um aviso de boas-vindas.
+
 ## Código
 
 ### Arquivo main.dart
@@ -43,7 +45,7 @@ flutter run
 
 * classe *MapPage* : Classe da página do mapa, que extende a classe [StatelessWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html) e instancia um estado da página.
 
-* classe *_MapPageState* : Classe de estado da página do mapa, que extende [State\<MapPage\>](https://api.flutter.dev/flutter/widgets/State-class.html) e, 
+* classe *_MapPageState* : Classe de estado da página do mapa, que extende [State\<MapPage\>](https://api.flutter.dev/flutter/widgets/State-class.html) e, tem os seguintes atributos e métodos: 
 
 #### Atributos _MapPageState
 
@@ -51,7 +53,7 @@ flutter run
 |-------------------|---------------------|------------------------------------------|
 | mapController     | [GoogleMapController](https://pub.dev/documentation/google_maps_flutter/latest/google_maps_flutter/GoogleMapController-class.html) | Controler da instância do Google Maps|
 | markers           | [Set](https://api.flutter.dev/flutter/dart-core/Set-class.html)\<[Marker](https://pub.dev/documentation/flutter_map/latest/flutter_map.plugin_api/Marker-class.html)\> | Guarda a lista de Marker no qual representam as unidades da PUC      |
-| databaseReference |                     |                                          |
+| databaseReference | [Firestore](https://firebase.flutter.dev/docs/firestore/usage/)    | Referência um local específico no bando de dados, no caso, será utilizado pra ler dados no Firebase |
 | _position         | Position            | Posição utiliando do geolocator |
 | myLatitude        | double              | Salvar a latitude do usuário no momento  |
 | myLongitude       | double              | Salvar a longiture do usuário no momento |
