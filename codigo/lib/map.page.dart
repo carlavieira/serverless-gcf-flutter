@@ -22,6 +22,7 @@ class _MapPageState extends State<MapPage> {
   double myLatitude;
   double myLongitude;
   StreamSubscription<Position> _positionStream;
+  bool showAlert = false;
 
   // Coordenadas Coreu
   //double lat = -19.9222935;
@@ -51,16 +52,16 @@ class _MapPageState extends State<MapPage> {
         myLatitude = position.latitude;
         myLongitude = position.longitude;
         if (myLatitude != null && myLongitude != null) {
-          getData(lat ?? 0, long ?? 0);
+          getData(myLatitude ?? 0, myLongitude ?? 0);
         }
       });
     });
   }
 
   _checkItsClose(response) {
-    print(response);
-    if (response['itsClose'] == true) {
+    if (response['itsClose'] == true && showAlert == false) {
       _alert(response['pucname']);
+      showAlert = true;
     }
   }
 
@@ -148,6 +149,7 @@ class _MapPageState extends State<MapPage> {
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
+                showAlert = false;
               },
             ),
           ],
@@ -209,7 +211,7 @@ class _MapPageState extends State<MapPage> {
           initialCameraPosition: CameraPosition(
               // Current Position
               //target: LatLng(myLatitude ?? 0, myLongitude ?? 0), zoom: 18.0),
-              target: LatLng(lat ?? 0, long ?? 0),
+              target: LatLng(myLatitude ?? 0, myLongitude ?? 0),
               zoom: 18.0),
           markers: markers,
         ));
