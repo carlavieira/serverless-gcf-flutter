@@ -23,4 +23,22 @@ Durante as aulas de laboratório foram apresentadas formas de se acessar o GCF e
 
 ## Instruções de utilização
 
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+Para a utilização do sistema localmente, será necessário a configuração de um ambiente capaz de executar uma aplicação flutter. Para isso, recomendamos que siga as orientações em https://flutter.dev/docs/get-started/install para cada sistema operacional.
+
+Tendo o ambiente configurado, será necessário a utilização de um dispositivo ou emulador.
+
+Para executar a aplicação, é possível realizar o comando:
+
+```shell
+flutter run
+```
+
+## Código
+
+### Arquivo main.dart
+
+* classe MyApp : 
+
+### Arquivo map.page.dart
+
+* classe MyApp : 
